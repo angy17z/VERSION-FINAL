@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libreta Escolar Virtual</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/calendar.css">
+    <link rel="stylesheet" href="css/libreta.css">
+</head>
+<body>
+    <div class="container" id="main-container">
+        <!-- El contenido se cargará dinámicamente aquí -->
+    </div>
+
+    <div id="modal-container">
+        <!-- Los modales se cargarán dinámicamente aquí -->
+    </div>
+
+    <!-- Embedded Templates -->
+    <template id="template-admin">
+        <!-- Pantalla Principal Administrador -->
+        <div class="main-screen" id="adminScreen">
+            <div class="top-nav">
+                <div class="top-nav-header">
+                    <h2 id="admin-title">Administrador</h2>
+                </div>
+                <ul class="top-nav-menu">
+                    <li class="active" onclick="showAdminSection('dashboard')">📊 Inicio</li>
+                    <li onclick="showAdminSection('courses')">📘 Cursos</li>
+                    <li onclick="showAdminSection('students')">👨‍🎓 Alumnos</li>
+                    <li onclick="showAdminSection('subjects')">📚 Materias</li>
+                </ul>
+                <button class="btn logout-btn" onclick="logout()">Cerrar Sesión</button>
+            </div>
+            <div class="content" id="adminContent"></div>
+        </div>
+    </template>
+
+    <template id="template-login">
+        <!-- Pantalla de Login -->
+        <div class="login-screen" id="loginScreen">
+            <h1>Libreta Escolar Virtual</h1>
+            
+            <div class="login-tabs">
+                <button class="tab-btn active" onclick="switchTab('admin')">Administrador</button>
+                <button class="tab-btn" onclick="switchTab('student')">Alumno</button>
+            </div>
+
+            <!-- Login Administrador -->
+            <div class="login-form active" id="adminLogin">
+                <div class="form-group">
+                    <label>Usuario:</label>
+                    <input type="text" id="adminUser" placeholder="Ingrese su usuario">
+                </div>
+                <div class="form-group">
+                    <label>Contraseña:</label>
+                    <input type="password" id="adminPassword" placeholder="Ingrese la contraseña">
+                </div>
+                <button class="btn btn-primary" onclick="loginAdmin()">Ingresar como Administrador</button>
+                <div class="error-msg" id="adminError"></div>
+            </div>
+
+            <!-- Login Alumno -->
+            <div class="login-form" id="studentLogin">
+                <div class="form-group">
+                    <label>Nombre Completo:</label>
+                    <input type="text" id="studentName" placeholder="Apellido y Nombre" oninput="capitalizeName()">
+                </div>
+                <div class="form-group">
+                    <label>DNI:</label>
+                    <input type="text" id="studentDNI" placeholder="Ingrese su DNI sin puntos">
+                </div>
+                <button class="btn btn-primary" onclick="loginStudent()">Ingresar como Alumno</button>
+                <div class="error-msg" id="studentError"></div>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-modals">
+        <!-- Modales -->
+        <div class="modal" id="courseModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="courseModalTitle">Nuevo Curso</h3>
+                    <button class="close-modal" onclick="closeModal('courseModal')">&times;</button>
+                </div>
+                <div class="form-group">
+                    <label>Año:</label>
+                    <select id="courseYear" onchange="updateDivisionDropdown()"></select>
+                </div>
+                <div class="form-group">
+                    <label>División:</label>
+                    <select id="courseDivision"></select>
+                </div>
+                <button class="btn btn-primary" onclick="saveCourse()">Guardar Curso</button>
+            </div>
+        </div>
+
+        <div class="modal" id="subjectToCourseModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Agregar Materia al Curso</h3>
+                    <button class="close-modal" onclick="closeModal('subjectToCourseModal')">&times;</button>
+                </div>
+                <div class="form-group">
+                    <label>Seleccione una Materia:</label>
+                    <select id="subjectToCourse"></select>
+                </div>
+                <button class="btn btn-primary" onclick="saveSubjectToCourse()">Agregar Materia</button>
+            </div>
+        </div>
+
+        <div class="modal" id="subjectModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="subjectModalTitle">Nueva Materia</h3>
+                    <button class="close-modal" onclick="closeModal('subjectModal')">&times;</button>
+                </div>
+                <div class="form-group">
+                    <label>Nombre de la Materia:</label>
+                    <input type="text" id="subjectName" placeholder="Ej: Matemática">
+                    <input type="hidden" id="subjectId">
+                </div>
+                <button class="btn btn-primary" onclick="saveSubject()">Guardar Materia</button>
+            </div>
+        </div>
+
+        <div class="modal" id="studentModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="studentModalTitle">Nuevo Alumno</h3>
+                    <button class="close-modal" onclick="closeModal('studentModal')">&times;</button>
+                </div>
+                <div class="form-group">
+                    <label>Nombre Completo:</label>
+                    <input type="text" id="newStudentName" placeholder="Apellido, Nombres">
+                </div>
+                <div class="form-group">
+                    <label>DNI:</label>
+                    <input type="text" id="newStudentDNI" placeholder="Número de DNI">
+                </div>
+                <div class="form-group">
+                    <label>Año:</label>
+                    <select id="newStudentYear" onchange="populateStudentDivisionSelect()"></select>
+                </div>
+                <div class="form-group">
+                    <label>División:</label>
+                    <select id="newStudentDivision"></select>
+                </div>
+                <button class="btn btn-primary" onclick="saveStudent()">Guardar Alumno</button>
+            </div>
+        </div>
+
+        <div class="modal" id="removeStudentFromCourseModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Quitar Alumnos del Curso</h3>
+                    <button class="close-modal" onclick="closeModal('removeStudentFromCourseModal')">&times;</button>
+                </div>
+                <div class="form-group">
+                    <label>Seleccione los alumnos a quitar:</label>
+                    <div id="studentsToRemoveList"></div>
+                </div>
+                <button class="btn btn-danger" onclick="removeStudentsFromCourse()">Quitar Alumnos</button>
+            </div>
+        </div>
+
+        <div class="modal" id="studentToCourseModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Agregar Alumno al Curso</h3>
+                    <button class="close-modal" onclick="closeModal('studentToCourseModal')">&times;</button>
+                </div>
+                <div class="form-group">
+                    <label>Seleccione un Alumno:</label>
+                    <select id="studentToCourse"></select>
+                </div>
+                <button class="btn btn-primary" onclick="saveStudentToCourse()">Agregar Alumno</button>
+            </div>
+        </div>
+
+        <div class="modal" id="gradesModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Cargar Notas</h3>
+                    <button class="close-modal" onclick="closeModal('gradesModal')">&times;</button>
+                </div>
+                <div class="form-group">
+                    <label>Seleccione el Trimestre:</label>
+                    <select id="trimesterSelect" onchange="loadGradesForTrimester()">
+                        <option value="">-- Seleccione --</option>
+                        <option value="t1">Trimestre 1</option>
+                        <option value="t2">Trimestre 2</option>
+                        <option value="t3">Trimestre 3</option>
+                    </select>
+                </div>
+                <div id="gradesForm"></div>
+                <button class="btn btn-primary" onclick="saveGrades()" style="display:none;" id="saveGradesBtn">Guardar Notas</button>
+            </div>
+        </div>
+
+        <div class="modal" id="editYearModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Editar Año</h3>
+                    <button class="close-modal" onclick="closeModal('editYearModal')">&times;</button>
+                </div>
+                <div class="form-group">
+                    <label>Año:</label>
+                    <input type="number" id="schoolYear" placeholder="Ej: 2024">
+                </div>
+                <button class="btn btn-primary" onclick="saveYear()">Guardar</button>
+            </div>
+        </div>
+
+        <div class="modal" id="courseAttendanceModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Tomar Asistencia</h3>
+                    <button class="close-modal" onclick="closeModal('courseAttendanceModal')">&times;</button>
+                </div>
+                <div class="modal-grid">
+                    <div class="modal-column">
+                        <div class="form-group">
+                            <label>Fecha:</label>
+                            <input type="date" id="attendanceDate">
+                        </div>
+                        <div class="form-group">
+                            <label>Turno:</label>
+                            <select id="attendanceShift">
+                                <option value="morning">Mañana</option>
+                                <option value="afternoon">Tarde</option>
+                                <option value="both">Ambos</option>
+                            </select>
+                        </div>
+                        <div class="error-msg" id="attendanceError"></div>
+                    </div>
+                    <div class="modal-column">
+                        <div class="form-group">
+                            <label>Alumnos Presentes:</label>
+                            <div id="attendanceStudentList"></div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="saveCourseAttendance()">Guardar Asistencia</button>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-student">
+        <!-- Pantalla Principal Alumno -->
+        <div class="main-screen" id="studentScreen">
+            <div class="top-nav">
+                <div class="top-nav-header">
+                    <h2>Alumno</h2>
+                </div>
+                <ul class="top-nav-menu">
+                    <li class="active" onclick="showStudentSection('inicio')">🏠 Inicio</li>
+                    <li onclick="showStudentSection('grades')">📝 Mis Notas</li>
+                    <li onclick="showStudentSection('attendance')">📅 Asistencias</li>
+                    <li onclick="showStudentSection('average')">📊 Promedios</li>
+                </ul>
+                <button class="btn logout-btn" onclick="logout()">Cerrar Sesión</button>
+            </div>
+            <div class="content" id="studentContent"></div>
+        </div>
+    </template>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

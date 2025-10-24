@@ -1,0 +1,16 @@
+<!-- Pantalla Principal Administrador -->
+<div class="main-screen" id="adminScreen">
+    <div class="top-nav">
+        <div class="top-nav-header">
+            <h2 id="admin-title">Administrador</h2>
+        </div>
+        <ul class="top-nav-menu">
+            <li class="active" onclick="showAdminSection('dashboard')">📊 Inicio</li>
+            <li onclick="showAdminSection('courses')">📘 Cursos</li>
+            <li onclick="showAdminSection('students')">👨‍🎓 Alumnos</li>
+            <li onclick="showAdminSection('subjects')">📚 Materias</li>
+        </ul>
+        <button class="btn logout-btn" onclick="logout()">Cerrar Sesión</button>
+    </div>
+    <div class="content" id="adminContent"></div>
+</div>

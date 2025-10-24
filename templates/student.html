@@ -1,0 +1,16 @@
+<!-- Pantalla Principal Alumno -->
+<div class="main-screen" id="studentScreen">
+    <div class="top-nav">
+        <div class="top-nav-header">
+            <h2>Alumno</h2>
+        </div>
+        <ul class="top-nav-menu">
+            <li class="active" onclick="showStudentSection('inicio')">🏠 Inicio</li>
+            <li onclick="showStudentSection('grades')">📝 Mis Notas</li>
+            <li onclick="showStudentSection('attendance')">📅 Asistencias</li>
+            <li onclick="showStudentSection('average')">📊 Promedios</li>
+        </ul>
+        <button class="btn logout-btn" onclick="logout()">Cerrar Sesión</button>
+    </div>
+    <div class="content" id="studentContent"></div>
+</div>

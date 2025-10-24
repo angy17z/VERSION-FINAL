@@ -1,0 +1,140 @@
+<!-- Modales -->
+<div class="modal" id="courseModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="courseModalTitle">Nuevo Curso</h3>
+            <button class="close-modal" onclick="closeModal('courseModal')">&times;</button>
+        </div>
+        <div class="form-group">
+            <label>Año:</label>
+            <select id="courseYear" onchange="updateDivisionDropdown()"></select>
+        </div>
+        <div class="form-group">
+            <label>División:</label>
+            <select id="courseDivision"></select>
+        </div>
+        <button class="btn btn-primary" onclick="saveCourse()">Guardar Curso</button>
+    </div>
+</div>
+
+<div class="modal" id="addSubjectToCourseModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Agregar Materia al Curso</h3>
+            <button class="close-modal" onclick="closeModal('addSubjectToCourseModal')">&times;</button>
+        </div>
+        <div class="form-group">
+            <label>Seleccione una Materia:</label>
+            <select id="subjectToAdd"></select>
+        </div>
+        <button class="btn btn-primary" onclick="addSubjectToCourse()">Agregar Materia</button>
+    </div>
+</div>
+
+<div class="modal" id="globalSubjectModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="globalSubjectModalTitle">Nueva Materia</h3>
+            <button class="close-modal" onclick="closeModal('globalSubjectModal')">&times;</button>
+        </div>
+        <div class="form-group">
+            <label>Nombre de la Materia:</label>
+            <input type="text" id="globalSubjectName" placeholder="Ej: Matemática">
+            <input type="hidden" id="globalSubjectId">
+        </div>
+        <button class="btn btn-primary" onclick="saveGlobalSubject()">Guardar Materia</button>
+    </div>
+</div>
+
+<div class="modal" id="studentModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="studentModalTitle">Nuevo Alumno</h3>
+            <button class="close-modal" onclick="closeModal('studentModal')">&times;</button>
+        </div>
+        <div class="form-group">
+            <label>Nombre Completo:</label>
+            <input type="text" id="newStudentName" placeholder="Apellido, Nombres">
+        </div>
+        <div class="form-group">
+            <label>DNI:</label>
+            <input type="text" id="newStudentDNI" placeholder="Número de DNI">
+        </div>
+        <div class="form-group">
+            <label>Año:</label>
+            <select id="newStudentYear" onchange="populateStudentDivisionSelect()"></select>
+        </div>
+        <div class="form-group">
+            <label>División:</label>
+            <select id="newStudentDivision"></select>
+        </div>
+        <button class="btn btn-primary" onclick="saveStudent()">Guardar Alumno</button>
+    </div>
+</div>
+
+<div class="modal" id="gradesModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Cargar Notas</h3>
+            <button class="close-modal" onclick="closeModal('gradesModal')">&times;</button>
+        </div>
+        <div class="form-group">
+            <label>Seleccione el Trimestre:</label>
+            <select id="trimesterSelect" onchange="loadGradesForTrimester()">
+                <option value="">-- Seleccione --</option>
+                <option value="t1">Trimestre 1</option>
+                <option value="t2">Trimestre 2</option>
+                <option value="t3">Trimestre 3</option>
+            </select>
+        </div>
+        <div id="gradesForm"></div>
+        <button class="btn btn-primary" onclick="saveGrades()" style="display:none;" id="saveGradesBtn">Guardar Notas</button>
+    </div>
+</div>
+
+<div class="modal" id="editYearModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Editar Año</h3>
+            <button class="close-modal" onclick="closeModal('editYearModal')">&times;</button>
+        </div>
+        <div class="form-group">
+            <label>Año:</label>
+            <input type="number" id="schoolYear" placeholder="Ej: 2024">
+        </div>
+        <button class="btn btn-primary" onclick="saveYear()">Guardar</button>
+    </div>
+</div>
+
+<div class="modal" id="courseAttendanceModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Tomar Asistencia</h3>
+            <button class="close-modal" onclick="closeModal('courseAttendanceModal')">&times;</button>
+        </div>
+        <div class="modal-grid">
+            <div class="modal-column">
+                <div class="form-group">
+                    <label>Fecha:</label>
+                    <input type="date" id="attendanceDate">
+                </div>
+                <div class="form-group">
+                    <label>Turno:</label>
+                    <select id="attendanceShift">
+                        <option value="morning">Mañana</option>
+                        <option value="afternoon">Tarde</option>
+                        <option value="both">Ambos</option>
+                    </select>
+                </div>
+                <div class="error-msg" id="attendanceError"></div>
+            </div>
+            <div class="modal-column">
+                <div class="form-group">
+                    <label>Alumnos Presentes:</label>
+                    <div id="attendanceStudentList"></div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="saveCourseAttendance()">Guardar Asistencia</button>
+    </div>
+</div>

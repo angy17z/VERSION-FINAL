@@ -1,0 +1,37 @@
+<!-- Pantalla de Login -->
+<div class="login-screen" id="loginScreen">
+    <h1>Libreta Escolar Virtual</h1>
+    
+    <div class="login-tabs">
+        <button class="tab-btn active" onclick="switchTab('admin')">Administrador</button>
+        <button class="tab-btn" onclick="switchTab('student')">Alumno</button>
+    </div>
+
+    <!-- Login Administrador -->
+    <div class="login-form active" id="adminLogin">
+        <div class="form-group">
+            <label>Usuario:</label>
+            <input type="text" id="adminUser" placeholder="Ingrese su usuario">
+        </div>
+        <div class="form-group">
+            <label>Contraseña:</label>
+            <input type="password" id="adminPassword" placeholder="Ingrese la contraseña">
+        </div>
+        <button class="btn btn-primary" onclick="loginAdmin()">Ingresar como Administrador</button>
+        <div class="error-msg" id="adminError"></div>
+    </div>
+
+    <!-- Login Alumno -->
+    <div class="login-form" id="studentLogin">
+        <div class="form-group">
+            <label>Nombre Completo:</label>
+            <input type="text" id="studentName" placeholder="Apellido y Nombre" oninput="capitalizeName()">
+        </div>
+        <div class="form-group">
+            <label>DNI:</label>
+            <input type="text" id="studentDNI" placeholder="Ingrese su DNI sin puntos">
+        </div>
+        <button class="btn btn-primary" onclick="loginStudent()">Ingresar como Alumno</button>
+        <div class="error-msg" id="studentError"></div>
+    </div>
+</div>

@@ -1,0 +1,218 @@
+
+/* Libreta estilo - fondo liso, bordes tipo cuaderno, tipografía formal */
+:root{
+    --paper-bg: #f8fafc;
+    --paper-edge: #e2e8f0;
+    --notebook-margin: 48px;
+    --red-margin: #ef4444;
+    --hole-size: 8px;
+    --text-primary: #1e293b;
+    --text-secondary: #fdfeff;
+    --border-color: #e2e8f0;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --border-radius: 12px;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+}
+
+*{box-sizing:border-box;}
+
+body {
+    font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding: var(--spacing-xl);
+    color: var(--text-primary);
+}
+
+/* Container looks like an open notebook page */
+.container {
+    width: 98%;
+    max-width: 1100px;
+    background: var(--paper-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-xl) 3rem;
+    position: relative;
+    overflow: visible;
+    border-top: 6px solid var(--border-color);
+    border-left: 10px solid var(--paper-edge);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Left red margin like a notebook */
+.container::before{
+    content:"";
+    position:absolute;
+    left: calc(3rem - var(--notebook-margin) + 22px);
+    top: var(--spacing-lg);
+    bottom: var(--spacing-lg);
+    width: 3px;
+    background: var(--red-margin);
+    border-radius: 2px;
+    opacity: 0.95;
+}
+
+/* Decorative punched holes down left edge */
+.container::after{
+    content:"";
+    position:absolute;
+    left: var(--spacing-sm);
+    top: var(--spacing-lg);
+    height: calc(100% - 3rem);
+    width: 30px;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 18px,
+        rgba(0,0,0,0.04) 18px,
+        rgba(0,0,0,0.04) 18px
+    );
+    pointer-events:none;
+}
+
+/* small circular holes */
+.hole {
+    position:absolute;
+    left: 18px;
+    width: var(--hole-size);
+    height: var(--hole-size);
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.04) inset;
+    border: 2px solid rgba(239, 68, 68, 0.06);
+}
+
+/* place some holes */
+.hole.h1{ top: 48px;}
+.hole.h2{ top: 96px;}
+.hole.h3{ top: 144px;}
+.hole.h4{ top: 192px;}
+.hole.h5{ top: 240px;}
+.hole.h6{ top: 288px;}
+
+/* Top nav and header tweaks */
+.top-nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.top-nav h1{
+    font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.top-nav h2 {
+font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+/* Menu items styling */
+.top-nav-menu{
+    list-style: none;
+    display: flex;
+    gap: var(--spacing-sm);
+}
+.top-nav-menu li{
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+.top-nav-menu li:hover{
+    background: var(--paper-edge);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+.top-nav-menu li.active{
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Content area */
+.content{
+    margin-top: var(--spacing-lg);
+    min-height: 320px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+}
+
+/* Animation classes triggered by JS */
+.content.enter {
+    animation: contentIn 0.4s ease-out;
+}
+.content.leave {
+    animation: contentOut 0.3s ease-in forwards;
+}
+
+@keyframes contentIn{
+    from { opacity: 0; transform: translateY(10px) scale(0.995); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes contentOut{
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-8px) scale(0.995); }
+}
+
+/* Forms, buttons */
+.btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-color);
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Make tables and cards look like paper */
+.card{
+    background: var(--paper-bg);
+    border: 1px solid var(--border-color);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 900px){
+    .container{ 
+        padding-left: 2.5rem; 
+        width: 98%;
+    }
+    .hole{ 
+        left: 8px; 
+    }
+}
